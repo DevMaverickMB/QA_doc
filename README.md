@@ -1,121 +1,260 @@
-<h1 align="center">Turns Codebase into Easy Tutorial with AI</h1>
+# Component Action Documentation Generator
 
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+A specialized tool that automatically generates comprehensive component action documentation from codebases, making it easier for QA testers to understand and test applications effectively.
 
-> *Ever stared at a new codebase written by others feeling completely lost? This tutorial shows you how to build an AI agent that analyzes GitHub repositories and creates beginner-friendly tutorials explaining exactly how the code works.*
+## Features
 
-<p align="center">
-  <img 
-    src="./assets/banner.png" width="800"
-  />
-</p>
+- **Component Action Documentation**: Create detailed mapping of UI components to their actions, effects, validation rules, and error scenarios
+- **Function Documentation**: Extract and document important functions, including parameters, return values, and dependencies
+- **UI Element Analysis**: Identify and document UI elements and their functionality
+- **Behavior Analysis**: Map out key system behaviors and the abstractions involved
+- **Dependency Tracking**: Document internal and external dependencies and their impact
+- **Visual Representation**: Generate Mermaid diagrams showing the connections between components and workflows
+- **CSV Export**: Extract test case tables from QA documentation to CSV files for easy import into test management tools
+- **Business Logic Extraction**: Extract and document business logic from SQL stored procedures to understand application functionality
+- **Combined Processing**: Process all three functionalities (component action, CSV extraction, business logic) sequentially with a single command
+- **Sequential Execution**: The combined flow processes each step in sequence - first component actions, then CSV extraction, and finally business logic extraction
+- **Error Handling**: Robust error handling with detailed error messages and stack traces in verbose mode
+- **Programmatic API**: Use the tool programmatically in your own Python applications
 
-This is a tutorial project of [Pocket Flow](https://github.com/The-Pocket/PocketFlow), a 100-line LLM framework. It crawls GitHub repositories and build a knowledge base from the code. It analyzes entire codebases to identify core abstractions and how they interact, and transforms complex code into beginner-friendly tutorials with clear visualizations.
+## Usage
 
-- Check out the [YouTube Development Tutorial](https://youtu.be/AFY67zOpbSo) for more!
+For component action documentation generation:
+```bash
+python main.py --repo https://github.com/username/repository
+```
 
-- Check out the [Substack Post Tutorial](https://zacharyhuang.substack.com/p/ai-codebase-knowledge-builder-full) for more!
+For business logic extraction from stored procedures:
+```bash
+python main.py --repo https://github.com/username/repository --business-logic
+```
 
-## ⭐ Example Results for Popular GitHub Repositories!
+For combined processing of component actions, CSV extraction, and business logic:
+```bash
+python main.py --repo https://github.com/username/repository --combined
+```
 
-<p align="center">
-    <img 
-      src="./assets/example.png" width="600"
-    />
-</p>
+For verbose output with detailed logging (helpful for troubleshooting):
+```bash
+python main.py --repo https://github.com/username/repository --combined --verbose
+```
 
-🤯 All these tutorials are generated **entirely by AI** by crawling the GitHub repo!
+Or for local directories:
 
-- [AutoGen Core](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/AutoGen%20Core) - Build AI teams that talk, think, and solve problems together like coworkers!
+```bash
+python main.py --dir /path/to/local/directory
+```
 
-- [Browser Use](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/Browser%20Use) - Let AI surf the web for you, clicking buttons and filling forms like a digital assistant!
+### Programmatic Usage
 
-- [Celery](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/Celery) - Supercharge your app with background tasks that run while you sleep!
+The tool can also be used programmatically through the provided `run_agent.py` script:
 
-- [Click](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/Click) - Turn Python functions into slick command-line tools with just a decorator!
+```bash
+python run_agent.py --input /path/to/source/code --output /path/to/output/directory
+```
 
-- [Crawl4AI](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/Crawl4AI) - Train your AI to extract exactly what matters from any website!
+Or imported and used in your own Python code:
 
-- [CrewAI](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/CrewAI) - Assemble a dream team of AI specialists to tackle impossible problems!
+```python
+from run_agent import run_agent
 
-- [DSPy](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/DSPy) - Build LLM apps like Lego blocks that optimize themselves!
+# Run the agent on a source directory
+try:
+    results = run_agent(
+        input_dir="/path/to/source/code",
+        output_dir="/path/to/output",
+        include_patterns=["*.py", "*.sql", "*.js"],
+        exclude_patterns=["tests/*", "node_modules/*"],
+        verbose=True  # Set to True for detailed logging
+    )
 
-- [FastAPI](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/FastAPI) - Create APIs at lightning speed with automatic docs that clients will love!
+    # Access the results
+    print(f"Documentation generated at: {results.get('qa_document_path')}")
+    print(f"CSV file generated at: {results.get('csv_path')}")
+    print(f"Business logic document: {results.get('business_logic_document')}")
+except Exception as e:
+    print(f"Error running the agent: {e}")
+```
 
-- [Flask](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/Flask) - Craft web apps with minimal code that scales from prototype to production!
+### Optional Arguments
 
-- [Google A2A](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/Google%20A2A) - The universal language that lets AI agents collaborate across borders!
+```
+--name          Project name (derived from repo/directory if not provided)
+--token         GitHub personal access token (reads from GITHUB_TOKEN env var if not provided)
+--output        Base directory for output (default: qa_docs)
+--max-size      Maximum file size in bytes (default: 100000, about 100KB)
+--include       Include file patterns (e.g., '*.py' '*.js')
+--exclude       Exclude file patterns (e.g., 'tests/*' 'docs/*')
+--csharp-web    Use C# web application specific patterns
+--csv           Extract test case tables to CSV files for easy import into test management tools
+--business-logic Extract business logic from SQL stored procedures
+--combined      Run all processing modes (component action, CSV extraction, and business logic) in one go
+--verbose, -v   Enable verbose output for debugging
+```
 
-- [LangGraph](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/LangGraph) - Design AI agents as flowcharts where each step remembers what happened before!
+## Output
 
-- [LevelDB](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/LevelDB) - Store data at warp speed with Google's engine that powers blockchains!
+The tool generates:
 
-- [MCP Python SDK](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/MCP%20Python%20SDK) - Build powerful apps that communicate through an elegant protocol without sweating the details!
+1. **QA_Testing_Documentation.md**: Main document containing:
+   - Application overview
+   - System architecture
+   - Technology stack
+   - Component action mapping
+   - User interaction flows
+   - Acceptance criteria
+   - Error handling and edge cases
+   - Integration points
+   - State management
+   - Configuration dependencies
 
-- [NumPy Core](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/NumPy%20Core) - Master the engine behind data science that makes Python as fast as C!
+2. **Component_Action_Reference.md**: Comprehensive action reference tables, including:
+   - Component inventory with detailed properties
+   - Trigger/event documentation
+   - Data elements
+   - Validation rules
+   - Error scenarios
+   - Test priority
+   - Expected performance metrics
 
-- [OpenManus](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/OpenManus) - Build AI agents with digital brains that think, learn, and use tools just like humans do!
+3. **Project_Business_Logic.md**: (When --business-logic or --combined is used) Business logic documentation including:
+   - Overview of the application's purpose
+   - Core business domains and their relationships
+   - Key business processes implemented in the database
+   - Business rules enforced through stored procedures
+   - Data flow through the application
+   - Business entities and their relationships
 
-- [Pydantic Core](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/Pydantic%20Core) - Validate data at rocket speed with just Python type hints!
+4. **test_cases.csv**: (When --csv or --combined is used) CSV file containing extracted test cases for import into test management tools
 
-- [Requests](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/Requests) - Talk to the internet in Python with code so simple it feels like cheating!
+## Requirements
 
-- [SmolaAgents](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/SmolaAgents) - Build tiny AI agents that punch way above their weight class!
+- Python 3.6+
+- Google Gemini API key or other LLM provider API key (set in .env file)
 
+## Installation
 
-## 🚀 Getting Started
+```bash
+git clone https://github.com/username/repository.git
+cd repository
+pip install -r requirements.txt
+cp .env.example .env
+# Edit .env with your API keys
+```
+
+## How It Works
+
+The tool uses an efficient flow-based architecture:
+
+1. **Repository Analysis**: Fetches and analyzes the codebase structure
+2. **Sequential Processing**: When using combined mode, processes:
+   1. First, component action documentation 
+   2. Then, CSV extraction
+   3. Finally, business logic extraction
+3. **LLM-Powered Analysis**: Utilizes LLMs to intelligently extract:
+   - Code abstractions and relationships
+   - Component actions and behaviors
+   - Business logic from stored procedures
+4. **Output Generation**: Creates detailed documentation in markdown format and CSV exports
+
+## Error Handling
+
+The tool includes robust error handling:
+
+- Input validation to ensure directories exist
+- Exception catching with informative error messages
+- Stack trace output in verbose mode
+- Proper exit codes for CI/CD pipelines
+
+# Agent for QA
+
+An AI-powered tool for generating QA testing documentation from code.
+
+## Features
+
+- Analyzes codebases to understand components, actions, and data elements
+- Automatically creates QA documentation including test cases and acceptance criteria
+- Exports test cases to CSV format for easy import into test management systems
+- Extracts business logic from stored procedures to understand database-level functionality
+- Customizable to various frameworks and project types
+- Template-driven approach for consistent documentation style
+- Combined mode for processing all documentation types at once
+
+## Installation
 
 1. Clone this repository
+2. Create a virtual environment: `python -m venv env`
+3. Activate the environment:
+   - Windows: `env\Scripts\activate`
+   - Mac/Linux: `source env/bin/activate`
+4. Install dependencies: `pip install -r requirements.txt`
+5. Copy `.env.example` to `.env` and set your API keys
 
-2. Install dependencies: 
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Usage
 
-3. Set up LLM in [`utils/call_llm.py`](./utils/call_llm.py) by providing credentials. By default, you can use the AI Studio key with this client for Gemini Pro 2.5:
+### Basic Usage
 
-   ```python
-   client = genai.Client(
-     api_key=os.getenv("GEMINI_API_KEY", "your-api_key"),
-   )
-   ```
-  
-   You can use your own models. We highly recommend the latest models with thinking capabilities (Claude 3.7 with thinking, O1). You can verify that it is correctly set up by running:
-   ```bash
-   python utils/call_llm.py
-   ```
+```bash
+python main.py --repo <github-repo-url>
+```
 
-7. Generate a complete codebase tutorial by running the main script:
-    ```bash
-    # Analyze a GitHub repository
-    python main.py --repo https://github.com/username/repo --include "*.py" "*.js" --exclude "tests/*" --max-size 50000
+or for a local directory:
 
-    # Or, analyze a local directory
-    python main.py --dir /path/to/your/codebase --include "*.py" --exclude "*test*"
-    ```
-    - `--repo` or `--dir` - Specify either a GitHub repo URL or a local directory path (required, mutually exclusive)
-    - `-n, --name` - Project name (optional, derived from URL/directory if omitted)
-    - `-t, --token` - GitHub token (or set GITHUB_TOKEN environment variable)
-    - `-o, --output` - Output directory (default: ./output)
-    - `-i, --include` - Files to include (e.g., "*.py" "*.js")
-    - `-e, --exclude` - Files to exclude (e.g., "tests/*" "docs/*")
-    - `-s, --max-size` - Maximum file size in bytes (default: 100KB)
-      
-The application will crawl the repository, analyze the codebase structure, generate tutorial content, and save the output in the specified directory (default: ./output).
+```bash
+python main.py --dir <path-to-directory>
+```
 
+### Combined Processing
 
-## 💡 Development Tutorial
+Process component actions, CSV extraction, and business logic all at once:
 
-- I built using [**Agentic Coding**](https://zacharyhuang.substack.com/p/agentic-coding-the-most-fun-way-to), the fastest development paradigm, where humans simply [design](docs/design.md) and agents [code](flow.py).
+```bash
+python main.py --dir ./my-project --combined
+```
 
-- The secret weapon is [Pocket Flow](https://github.com/The-Pocket/PocketFlow), a 100-line LLM framework that lets Agents (e.g., Cursor AI) build for you
-  
-- Check out the Step-by-step YouTube development tutorial: 
+### Verbose Mode
 
-<br>
-<div align="center">
-  <a href="https://youtu.be/AFY67zOpbSo" target="_blank">
-    <img src="./assets/youtube_thumbnail.png" width="500" alt="IMAGE ALT TEXT" style="cursor: pointer;">
-  </a>
-</div>
-<br>
+Enable detailed logging for troubleshooting:
+
+```bash
+python main.py --dir ./my-project --combined --verbose
+```
+
+### Additional Options
+
+```bash
+python main.py --dir ./my-project \
+  --name "My Project Name" \
+  --output ./documentation \
+  --include "*.js" "*.jsx" "*.sql" \
+  --exclude "node_modules/*" "tests/*" \
+  --max-size 200000 \
+  --combined \
+  --verbose
+```
+
+### Using Custom Templates
+
+The QA documentation generation supports custom templates for consistent formatting:
+
+1. **Default Template**: The system includes a default template at `utils/qa_template.md`
+2. **Custom Template**: You can create your own template with the exact structure you want
+
+To use a custom template:
+
+1. Create your markdown template file with the desired structure
+2. Place it at `utils/qa_template.md` to replace the default template
+3. Run the documentation generator as usual
+
+The AI will follow the exact structure, headings, tables, and formatting of your template while filling in content specific to the analyzed code.
+
+## Output
+
+The documentation is generated in markdown format and saved to the specified output directory (default: `./qa_docs`). 
+
+When using the combined mode (--combined flag):
+- Component action documentation is generated
+- Test cases are exported to CSV for easy import into test management tools
+- Business logic documentation is generated from SQL stored procedures
+
+This provides a comprehensive documentation suite covering both frontend and backend aspects of the application. 

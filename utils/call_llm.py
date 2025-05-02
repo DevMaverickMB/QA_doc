@@ -4,6 +4,10 @@ import logging
 import json
 from datetime import datetime
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv()
+
 # Configure logging
 log_directory = os.getenv("LOG_DIR", "logs")
 os.makedirs(log_directory, exist_ok=True)
@@ -42,16 +46,20 @@ def call_llm(prompt: str, use_cache: bool = True) -> str:
             return cache[prompt]
     
     # Call the LLM if not in cache or cache disabled
-    client = genai.Client(
-        vertexai=True, 
-        # TODO: change to your own project id and location
-        project=os.getenv("GEMINI_PROJECT_ID", "your-project-id"),
-        location=os.getenv("GEMINI_LOCATION", "us-central1")
-    )
-    # You can comment the previous line and use the AI Studio key instead:
     # client = genai.Client(
-    #     api_key=os.getenv("GEMINI_API_KEY", "your-api_key"),
+    #     vertexai=True, 
+    #     # TODO: change to your own project id and location
+    #     project=os.getenv("GEMINI_PROJECT_ID", "your-project-id"),
+    #     location=os.getenv("GEMINI_LOCATION", "us-central1")
     # )
+    # You can comment the previous line and use the AI Studio key instead:
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise ValueError("GEMINI_API_KEY not found in environment variables. Make sure it's set in the .env file.")
+    
+    client = genai.Client(
+        api_key=api_key,
+    )
     model = os.getenv("GEMINI_MODEL", "gemini-2.5-pro-exp-03-25")
     response = client.models.generate_content(
         model=model,
@@ -83,7 +91,7 @@ def call_llm(prompt: str, use_cache: bool = True) -> str:
     
     return response_text
 
-# # Use Anthropic Claude 3.7 Sonnet Extended Thinking
+
 # def call_llm(prompt, use_cache: bool = True):
 #     from anthropic import Anthropic
 #     client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", "your-api-key"))
@@ -100,7 +108,7 @@ def call_llm(prompt: str, use_cache: bool = True) -> str:
 #     )
 #     return response.content[1].text
 
-# # Use OpenAI o1
+
 # def call_llm(prompt, use_cache: bool = True):    
 #     from openai import OpenAI
 #     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "your-api-key"))

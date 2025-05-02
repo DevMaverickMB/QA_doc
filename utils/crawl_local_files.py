@@ -20,6 +20,8 @@ def crawl_local_files(directory, include_patterns=None, exclude_patterns=None, m
         
     files_dict = {}
     
+    print(f"Crawling directory: {directory}...")
+    
     for root, _, files in os.walk(directory):
         for filename in files:
             filepath = os.path.join(root, filename)
@@ -55,13 +57,43 @@ def crawl_local_files(directory, include_patterns=None, exclude_patterns=None, m
             if max_file_size and os.path.getsize(filepath) > max_file_size:
                 continue
                 
+            # Better binary file detection - check file extension first
+            file_ext = os.path.splitext(filename)[1].lower()
+            binary_extensions = {'.png', '.jpg', '.jpeg', '.gif', '.bmp', '.ico', '.pdf', 
+                               '.zip', '.gz', '.tar', '.rar', '.exe', '.dll', '.so', '.bin',
+                               '.pyc', '.pyd', '.o', '.obj', '.dat', '.db', '.sqlite', '.db3',
+                               '.xlsx', '.xls', '.doc', '.docx', '.ppt', '.pptx', '.class',
+                               '.jar', '.war', '.ttf', '.otf', '.woff', '.woff2', '.eot', '.svg',
+                               '.tiff', '.tif', '.psd', '.mp3', '.mp4', '.avi', '.mkv', '.mov',
+                               '.wmv', '.wav', '.flac', '.dmg', '.iso', '.img', '.ds_store'}
+                
+            if file_ext in binary_extensions or filename.lower() == '.ds_store':
+                continue
+                
             try:
+                # Check for binary content
+                is_binary = False
+                with open(filepath, 'rb') as f:
+                    chunk = f.read(1024)
+                    # Check for null bytes or high percentage of non-printable chars
+                    if b'\x00' in chunk or sum(c < 9 or 13 < c < 32 or c > 126 for c in chunk) > len(chunk) * 0.1:
+                        is_binary = True
+                
+                if is_binary:
+                    continue
+                
+                # Try reading as UTF-8
                 with open(filepath, 'r', encoding='utf-8') as f:
                     content = f.read()
-                files_dict[relpath] = content
+                    files_dict[relpath] = content
+                    
+            except UnicodeDecodeError:
+                # Skip files that can't be decoded as text
+                continue
             except Exception as e:
                 print(f"Warning: Could not read file {filepath}: {e}")
                 
+    print(f"Fetched {len(files_dict)} files.")
     return {"files": files_dict}
 
 if __name__ == "__main__":
