@@ -59,7 +59,7 @@ def convert_qa_doc_to_csv(doc_path, output_dir=None, debug=False):
             print(f"DEBUG: Pattern '{pattern}' found {len(matches)} matches")
     
     # Define standard columns that all test cases should have
-    standard_columns = ["Component", "Test ID", "Preconditions", "Steps to Execute", 
+    standard_columns = ["Component", "Test ID", "Description", "Preconditions", "Steps to Execute", 
                         "Expected Result @ Each Step", "Expected Final Result", "Severity/Priority"]
     
     # Collect all test cases from all tables
@@ -283,6 +283,7 @@ The CSV file contains {total_test_cases} test cases from {len(test_case_sections
 The CSV file has the following columns:
 - **Component**: Identifies which component the test case belongs to
 - **Test ID**: Unique identifier for the test case
+- **Description**: Brief description of what the test case is verifying
 - **Preconditions**: Required state before executing the test
 - **Steps to Execute**: Actions to perform during the test
 - **Expected Result @ Each Step**: What should happen after each action

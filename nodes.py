@@ -680,9 +680,9 @@ Required Documentation Structure:
    [Clear, measurable criteria that define when this component can be considered complete and working correctly]
    
    ## Test Cases: [Component Name]
-   | Test ID | Preconditions | Steps to Execute | Expected Final Result | Severity/Priority |
-   | :------ | :------------ | :--------------- | :-------------------- | :---------------- |
-   | [Unique identifier] | [Required state before test execution] | [Numbered, specific actions for tester to perform] | [Overall outcome when test completes] | [High/Medium/Low] |
+   | Test ID | Description | Preconditions | Steps to Execute | Expected Final Result | Severity/Priority |
+   | :------ | :---------- | :------------ | :--------------- | :-------------------- | :---------------- |
+   | [Unique identifier] | [Brief description of what the test case is verifying] | [Required state before test execution] | [Numbered, specific actions for tester to perform] | [Overall outcome when test completes] | [High/Medium/Low] |
 
 4. Testing Strategy and Requirements
    - Provide a comprehensive testing strategy for the application, including:
@@ -873,7 +873,7 @@ class ConvertDocToCSV(Node):
         csv_path = os.path.join(output_dir, "test_cases.csv")
         
         # Define the exact columns we want to use - add Serial Number as the first column
-        standardized_columns = ['Serial Number', 'Test ID', 'Preconditions', 'Steps to Execute', 'Expected Final Result', 'Severity/Priority']
+        standardized_columns = ['Serial Number', 'Test ID', 'Description', 'Preconditions', 'Steps to Execute', 'Expected Final Result', 'Severity/Priority']
         
         # If no doc_path is provided, create a minimal CSV with headers
         if not doc_path or not os.path.exists(doc_path):
@@ -987,6 +987,9 @@ class ConvertDocToCSV(Node):
                 'Test Case ID': 'Test ID',
                 'TestID': 'Test ID',
                 'ID': 'Test ID',
+                'Description': 'Description',
+                'Test Description': 'Description',
+                'Test Case Description': 'Description',
                 'Preconditions': 'Preconditions',
                 'Precondition': 'Preconditions',
                 'Steps to Execute': 'Steps to Execute',

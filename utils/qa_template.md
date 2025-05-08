@@ -57,10 +57,10 @@ Brief description of the application, its purpose, and main functionalities. Inc
 
 ## Test Cases: Component 1 Name
 
-| Test ID | Preconditions | Steps to Execute | Expected Final Result | Severity/Priority |
-| :------ | :------------ | :--------------- | :-------------------- | :---------------- |
-| [ID-001] | [Preconditions] | [Steps] | [Result] | [Priority] |
-| [ID-002] | [Preconditions] | [Steps] | [Result] | [Priority] |
+| Test ID | Description | Preconditions | Steps to Execute | Expected Final Result | Severity/Priority |
+| :------ | :---------- | :------------ | :--------------- | :-------------------- | :---------------- |
+| [ID-001] | [Brief description of the test case] | [Preconditions] | [Steps] | [Result] | [Priority] |
+| [ID-002] | [Brief description of the test case] | [Preconditions] | [Steps] | [Result] | [Priority] |
 
 ## Acceptance Criteria: Component 2 Name
 
@@ -70,10 +70,10 @@ Brief description of the application, its purpose, and main functionalities. Inc
 
 ## Test Cases: Component 2 Name
 
-| Test ID | Preconditions | Steps to Execute | Expected Final Result | Severity/Priority |
-| :------ | :------------ | :--------------- | :-------------------- | :---------------- |
-| [ID-001] | [Preconditions] | [Steps] | [Result] | [Priority] |
-| [ID-002] | [Preconditions] | [Steps] | [Result] | [Priority] |
+| Test ID | Description | Preconditions | Steps to Execute | Expected Final Result | Severity/Priority |
+| :------ | :---------- | :------------ | :--------------- | :-------------------- | :---------------- |
+| [ID-001] | [Brief description of the test case] | [Preconditions] | [Steps] | [Result] | [Priority] |
+| [ID-002] | [Brief description of the test case] | [Preconditions] | [Steps] | [Result] | [Priority] |
 
 # 4. Testing Strategy and Requirements
 
